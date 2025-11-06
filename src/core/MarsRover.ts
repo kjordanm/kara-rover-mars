@@ -1,6 +1,5 @@
-import { MovementInstruction, Orientation } from './Types';
 import { Position } from './Position';
-import { Translator } from './Translator';
+import { MovementInstruction, Navigator, Orientation } from './Navigator';
 
 export class MarsRover {
 	position: Position;
@@ -12,16 +11,16 @@ export class MarsRover {
 	}
 
 	moveTo(movementInstructions: MovementInstruction[]): void {
-		const translator = new Translator();
+		const navigator = new Navigator();
 
 		movementInstructions.forEach((movementInstruction) => {
-			const movement = translator.getMovement(movementInstruction, this.position, this.orientation);
+			const movement = navigator.getMovement(movementInstruction, this.position, this.orientation);
 			this.position = movement.position;
 			this.orientation = movement.orientation as Orientation;
 		});
 	}
 
 	getPosition(): Position {
-		return new Position(this.position.x, this.position.y);
+		return Position.create(this.position.getX(), this.position.getY());
 	}
 }
